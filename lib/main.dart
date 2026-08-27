@@ -169,23 +169,20 @@ class _InvitationPageState extends State<InvitationPage> {
       return;
     }
 
-    const primarySectionCount = 3;
     final position = _scrollController.position;
     final currentOffset = position.pixels;
-    final lastPrimaryOffset = sectionExtent * (primarySectionCount - 1);
-    final snapLimit = lastPrimaryOffset + sectionExtent * 0.52;
 
-    if (currentOffset > snapLimit) {
+    if (currentOffset > sectionExtent * 1.2) {
       return;
     }
 
     final page = currentOffset / sectionExtent;
     final targetIndex = switch (_lastScrollDirection) {
-      ScrollDirection.reverse => page.floor() + 1,
-      ScrollDirection.forward => page.ceil() - 1,
+      ScrollDirection.reverse => 1,
+      ScrollDirection.forward => page < 0.82 ? 0 : 1,
       ScrollDirection.idle => page.round(),
-    }.clamp(0, primarySectionCount - 1).toInt();
-    final rawTarget = targetIndex == 0 ? 1.0 : sectionExtent * targetIndex;
+    }.clamp(0, 1).toInt();
+    final rawTarget = targetIndex == 0 ? 1.0 : sectionExtent;
     final target = rawTarget.clamp(0.0, position.maxScrollExtent);
 
     if ((currentOffset - target).abs() < 2) {
@@ -822,21 +819,21 @@ class DetailsScreenSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final compact = MediaQuery.sizeOf(context).width < 600;
 
-    return SizedBox(
-      height: sectionHeight(context),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        horizontalPagePadding(context),
+        compact ? 38 : 54,
+        horizontalPagePadding(context),
+        compact ? 30 : 42,
+      ),
       child: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: horizontalPagePadding(context),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ScrollReveal(child: VerticalThread(height: compact ? 68 : 96)),
-              SizedBox(height: compact ? 44 : 70),
-              const DetailCards(),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ScrollReveal(child: VerticalThread(height: compact ? 54 : 70)),
+            SizedBox(height: compact ? 30 : 38),
+            const DetailCards(),
+          ],
         ),
       ),
     );
@@ -848,11 +845,13 @@ class DetailCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final compact = MediaQuery.sizeOf(context).width < 600;
+
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 448),
-      child: const Column(
+      child: Column(
         children: [
-          ScrollReveal(
+          const ScrollReveal(
             child: InfoCard(
               title: 'Qachon',
               children: [
@@ -872,8 +871,8 @@ class DetailCards extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 28),
-          ScrollReveal(
+          SizedBox(height: compact ? 22 : 24),
+          const ScrollReveal(
             delay: Duration(milliseconds: 170),
             child: InfoCard(
               title: 'Manzil',
@@ -1135,16 +1134,16 @@ class CountdownScreenSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: sectionHeight(context),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: horizontalPagePadding(context),
-          ),
-          child: const CountdownSection(),
-        ),
+    final compact = MediaQuery.sizeOf(context).width < 600;
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        horizontalPagePadding(context),
+        compact ? 38 : 54,
+        horizontalPagePadding(context),
+        compact ? 58 : 74,
       ),
+      child: const Center(child: CountdownSection()),
     );
   }
 }
@@ -1202,7 +1201,7 @@ class _CountdownSectionState extends State<CountdownSection> {
             style: sectionTitleStyle(context),
           ),
         ),
-        SizedBox(height: compact ? 28 : 36),
+        SizedBox(height: compact ? 24 : 28),
         Wrap(
           alignment: WrapAlignment.center,
           spacing: compact ? 14 : 22,
