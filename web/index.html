@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -19,25 +20,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Shahzod va Irodaning nikoh taklifnomasi.">
+  <meta name="description" content="Fozil va Dilafruzning nikoh taklifnomasi.">
   <meta name="theme-color" content="#966E52">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Shahzod & Iroda - Nikoh taklifnomasi">
-  <meta property="og:description" content="Sizni taklif etamiz. 30 Dekabr, 2025.">
+  <meta property="og:title" content="Fozil & Dilafruz - Nikoh taklifnomasi">
+  <meta property="og:description" content="30 Dekabr, 2025. Sizni taklif etamiz. ">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Nikoh taklifnomasi">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/Icon-180.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/Icon-192.png" />
 
-  <title>Shahzod & Iroda - Nikoh taklifnomasi</title>
+  <title>Fozil & Dilafruz - Nikoh taklifnomasi</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    html, body {
+    html,
+    body {
       width: 100%;
       height: 100%;
       margin: 0;
@@ -46,7 +49,61 @@
     }
   </style>
 </head>
+
 <body>
+  <audio id="wedding-music" src="assets/assets/audio/music.mp3" autoplay loop playsinline preload="auto"></audio>
+  <script>
+    (function () {
+      const audio = document.getElementById('wedding-music');
+      window.weddingMusicAudio = audio;
+
+      if (!audio) {
+        return;
+      }
+
+      audio.volume = 0.42;
+      audio.muted = false;
+      audio.style.display = 'none';
+
+      function playWeddingMusic(restart) {
+        if (restart || audio.ended) {
+          audio.currentTime = 0;
+        }
+
+        const attempt = audio.play();
+        if (attempt && typeof attempt.catch === 'function') {
+          attempt.catch(function () {
+            audio.muted = true;
+            audio.play().then(function () {
+              setTimeout(function () {
+                audio.muted = false;
+              }, 160);
+            }).catch(function () { });
+          });
+        }
+      }
+
+      [0, 250, 700, 1400, 2600].forEach(function (delay) {
+        setTimeout(function () {
+          if (audio.paused) {
+            playWeddingMusic(delay === 0);
+          }
+        }, delay);
+      });
+
+      function unlockMusic() {
+        audio.muted = false;
+        playWeddingMusic(true);
+        window.removeEventListener('pointerdown', unlockMusic, true);
+        window.removeEventListener('touchstart', unlockMusic, true);
+        window.removeEventListener('click', unlockMusic, true);
+      }
+
+      window.addEventListener('pointerdown', unlockMusic, true);
+      window.addEventListener('touchstart', unlockMusic, true);
+      window.addEventListener('click', unlockMusic, true);
+    })();
+  </script>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader
@@ -57,4 +114,5 @@
   -->
   <script src="flutter_bootstrap.js" async></script>
 </body>
+
 </html>

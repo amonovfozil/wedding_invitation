@@ -1,14 +1,19 @@
 {
-    "name": "Shahzod & Iroda - Nikoh taklifnomasi",
+    "name": "Fozil & Dilafruz - Nikoh taklifnomasi",
     "short_name": "Taklifnoma",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FAF9F6",
     "theme_color": "#966E52",
-    "description": "Shahzod va Irodaning nikoh taklifnomasi.",
+    "description": "Fozil va Dilafruzning nikoh taklifnomasi.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
+        {
+            "src": "icons/Icon-180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
         {
             "src": "icons/Icon-192.png",
             "sizes": "192x192",

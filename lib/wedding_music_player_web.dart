@@ -3,6 +3,9 @@ import 'dart:js_interop';
 
 import 'package:web/web.dart' as web;
 
+@JS('weddingMusicAudio')
+external web.HTMLAudioElement? get _weddingMusicAudio;
+
 class WeddingMusicPlayer {
   WeddingMusicPlayer() {
     _audio
@@ -14,17 +17,21 @@ class WeddingMusicPlayer {
       ..muted = false
       ..volume = 0.42;
 
+    _audio.id = 'wedding-music';
     _audio
       ..setAttribute('autoplay', '')
       ..setAttribute('playsinline', 'true')
       ..setAttribute('webkit-playsinline', 'true');
     _audio.style.display = 'none';
-    web.document.body?.appendChild(_audio);
+    if (_audio.parentElement == null) {
+      web.document.body?.appendChild(_audio);
+    }
     _audio.load();
     _scheduleAutoplayAttempts();
   }
 
-  final web.HTMLAudioElement _audio = web.HTMLAudioElement();
+  final web.HTMLAudioElement _audio =
+      _weddingMusicAudio ?? web.HTMLAudioElement();
   final List<Timer> _autoplayTimers = [];
 
   bool get isPlaying => !_audio.paused;
@@ -57,7 +64,16 @@ class WeddingMusicPlayer {
       await _audio.play().toDart;
       return true;
     } catch (_) {
-      return false;
+      try {
+        _audio.muted = true;
+        await _audio.play().toDart;
+        Timer(const Duration(milliseconds: 160), () {
+          _audio.muted = false;
+        });
+        return true;
+      } catch (_) {
+        return false;
+      }
     }
   }
 
@@ -78,6 +94,5 @@ class WeddingMusicPlayer {
       timer.cancel();
     }
     pause();
-    _audio.remove();
   }
 }
