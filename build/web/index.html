@@ -47,17 +47,69 @@
       width: 100%;
       height: 100%;
       margin: 0;
+      overscroll-behavior: none;
+      overscroll-behavior-y: none;
+      overflow: hidden;
       overflow-x: hidden;
       background: #FAF9F6;
+    }
+
+    flutter-view,
+    flt-glass-pane {
+      overscroll-behavior: none;
+      overscroll-behavior-y: none;
+      touch-action: none;
+    }
+
+    #html-fallback {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+      background: #FAF9F6;
+      color: #966E52;
+      font-family: Georgia, 'Times New Roman', serif;
+      text-align: center;
+      z-index: 10000;
+    }
+
+    #html-fallback h1 {
+      margin: 0 0 20px;
+      font-size: clamp(56px, 15vw, 94px);
+      line-height: 0.98;
+      font-weight: 700;
+    }
+
+    #html-fallback p {
+      margin: 10px 0 0;
+      color: #3F3A37;
+      font-size: 22px;
+    }
+
+    #html-fallback .date {
+      color: #966E52;
+      font-size: 24px;
+      font-weight: 700;
     }
   </style>
 </head>
 
 <body>
+  <div id="html-fallback" aria-hidden="true">
+    <div>
+      <h1>Fozil<br><span style="font-size: 0.25em; font-style: italic;">va</span><br>Dilafruz</h1>
+      <p>Sizni taklif etamiz!</p>
+      <p class="date">8 Sentabr, 2026</p>
+    </div>
+  </div>
   <audio id="wedding-music" src="assets/assets/audio/music.mp3" autoplay loop playsinline preload="auto"></audio>
   <script>
     (function () {
-      const audio = document.getElementById('wedding-music');
+      var audio = document.getElementById('wedding-music');
+      var fallback = document.getElementById('html-fallback');
       window.weddingMusicAudio = audio;
 
       if (!audio) {
@@ -68,35 +120,36 @@
       audio.muted = false;
       audio.style.display = 'none';
 
-      function playWeddingMusic(restart) {
-        if (restart || audio.ended) {
-          audio.currentTime = 0;
-        }
-
-        const attempt = audio.play();
+      function playWeddingMusic(allowMutedFallback) {
+        var attempt = audio.play();
         if (attempt && typeof attempt.catch === 'function') {
           attempt.catch(function () {
+            if (!allowMutedFallback) {
+              return;
+            }
+
             audio.muted = true;
-            audio.play().then(function () {
-              setTimeout(function () {
-                audio.muted = false;
-              }, 160);
-            }).catch(function () { });
+            var mutedAttempt = audio.play();
+            if (mutedAttempt && typeof mutedAttempt.catch === 'function') {
+              mutedAttempt.catch(function () { });
+            }
           });
         }
       }
 
-      [0, 250, 700, 1400, 2600].forEach(function (delay) {
+      var delays = [0, 250, 700, 1400, 2600];
+      for (var i = 0; i < delays.length; i++) {
+        var delay = delays[i];
         setTimeout(function () {
           if (audio.paused) {
-            playWeddingMusic(delay === 0);
+            playWeddingMusic(true);
           }
         }, delay);
-      });
+      }
 
       function unlockMusic() {
         audio.muted = false;
-        playWeddingMusic(true);
+        playWeddingMusic(false);
         window.removeEventListener('pointerdown', unlockMusic, true);
         window.removeEventListener('touchstart', unlockMusic, true);
         window.removeEventListener('click', unlockMusic, true);
@@ -105,6 +158,32 @@
       window.addEventListener('pointerdown', unlockMusic, true);
       window.addEventListener('touchstart', unlockMusic, true);
       window.addEventListener('click', unlockMusic, true);
+
+      var lastTouchY = 0;
+      window.addEventListener('touchstart', function (event) {
+        if (event.touches && event.touches.length === 1) {
+          lastTouchY = event.touches[0].clientY;
+        }
+      }, { passive: false });
+      window.addEventListener('touchmove', function (event) {
+        if (!event.touches || event.touches.length !== 1) {
+          return;
+        }
+
+        var currentTouchY = event.touches[0].clientY;
+        var pullingDown = currentTouchY > lastTouchY;
+        lastTouchY = currentTouchY;
+
+        if (pullingDown && window.scrollY <= 0) {
+          event.preventDefault();
+        }
+      }, { passive: false });
+
+      window.addEventListener('flutter-first-frame', function () {
+        if (fallback && fallback.parentNode) {
+          fallback.parentNode.removeChild(fallback);
+        }
+      });
     })();
   </script>
   <!--

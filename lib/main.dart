@@ -12,12 +12,32 @@ import 'wedding_music_player.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const InvitationApp());
+  final firebaseReady = await _initializeFirebase();
+  runApp(InvitationApp(firebaseReady: firebaseReady));
+}
+
+Future<bool> _initializeFirebase() async {
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    return true;
+  } catch (error, stackTrace) {
+    FlutterError.reportError(
+      FlutterErrorDetails(
+        exception: error,
+        stack: stackTrace,
+        library: 'invitation bootstrap',
+      ),
+    );
+    return false;
+  }
 }
 
 class InvitationApp extends StatelessWidget {
-  const InvitationApp({super.key});
+  const InvitationApp({required this.firebaseReady, super.key});
+
+  final bool firebaseReady;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +58,7 @@ class InvitationApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const InvitationPage(),
+      home: InvitationPage(firebaseReady: firebaseReady),
     );
   }
 }
@@ -78,7 +98,9 @@ class AppColors {
 }
 
 class InvitationPage extends StatefulWidget {
-  const InvitationPage({super.key});
+  const InvitationPage({required this.firebaseReady, super.key});
+
+  final bool firebaseReady;
 
   @override
   State<InvitationPage> createState() => _InvitationPageState();
@@ -86,15 +108,19 @@ class InvitationPage extends StatefulWidget {
 
 class _InvitationPageState extends State<InvitationPage> {
   final _musicPlayer = WeddingMusicPlayer();
+  final _scrollController = ScrollController(initialScrollOffset: 1);
 
   bool _musicPlaying = false;
   bool _gestureMusicFallbackEnabled = true;
+  bool _gestureMusicAttempted = false;
   Timer? _autoplayRetryTimer;
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_keepTelegramWebViewOpen);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _keepTelegramWebViewOpen();
       _scheduleAutoplay();
     });
   }
@@ -102,12 +128,24 @@ class _InvitationPageState extends State<InvitationPage> {
   @override
   void dispose() {
     _autoplayRetryTimer?.cancel();
+    _scrollController.dispose();
     _musicPlayer.dispose();
     super.dispose();
   }
 
+  void _keepTelegramWebViewOpen() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    final position = _scrollController.position;
+    if (position.maxScrollExtent > 0 && position.pixels <= 0) {
+      _scrollController.jumpTo(1);
+    }
+  }
+
   void _scheduleAutoplay() {
-    _startMusic(restart: true);
+    _startMusic();
 
     var attempts = 0;
     _autoplayRetryTimer = Timer.periodic(const Duration(milliseconds: 700), (
@@ -123,9 +161,11 @@ class _InvitationPageState extends State<InvitationPage> {
     });
   }
 
-  void _startMusic({bool restart = false}) {
+  void _startMusic({bool restart = false, bool userGesture = false}) {
     unawaited(
-      _musicPlayer.play(restart: restart).then((isPlaying) {
+      _musicPlayer.play(restart: restart, userGesture: userGesture).then((
+        isPlaying,
+      ) {
         if (isPlaying) {
           _gestureMusicFallbackEnabled = false;
           _autoplayRetryTimer?.cancel();
@@ -138,11 +178,14 @@ class _InvitationPageState extends State<InvitationPage> {
   }
 
   void _startMusicFromGesture() {
-    if (!_gestureMusicFallbackEnabled || _musicPlaying) {
+    if (!_gestureMusicFallbackEnabled ||
+        _gestureMusicAttempted ||
+        _musicPlaying) {
       return;
     }
 
-    _startMusic(restart: true);
+    _gestureMusicAttempted = true;
+    _startMusic(userGesture: true);
   }
 
   void _toggleMusic() {
@@ -170,14 +213,16 @@ class _InvitationPageState extends State<InvitationPage> {
             Listener(
               behavior: HitTestBehavior.translucent,
               onPointerDown: (_) => _startMusicFromGesture(),
-              child: const ScrollRevealScope(
+              child: ScrollRevealScope(
                 enabled: true,
                 child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: const ClampingScrollPhysics(),
                   child: Column(
                     children: [
-                      MainInvitationFlow(),
-                      WishesSection(),
-                      ClosingSection(),
+                      const MainInvitationFlow(),
+                      WishesSection(firebaseReady: widget.firebaseReady),
+                      const ClosingSection(),
                     ],
                   ),
                 ),
@@ -1165,7 +1210,9 @@ class CountdownBox extends StatelessWidget {
 }
 
 class WishesSection extends StatefulWidget {
-  const WishesSection({super.key});
+  const WishesSection({required this.firebaseReady, super.key});
+
+  final bool firebaseReady;
 
   @override
   State<WishesSection> createState() => _WishesSectionState();
@@ -1175,9 +1222,29 @@ class _WishesSectionState extends State<WishesSection> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _messageController = TextEditingController();
-  final _responses = FirebaseFirestore.instance.collection('wedding_responses');
+  CollectionReference<Map<String, dynamic>>? _responses;
 
   bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!widget.firebaseReady) {
+      return;
+    }
+
+    try {
+      _responses = FirebaseFirestore.instance.collection('wedding_responses');
+    } catch (error, stackTrace) {
+      FlutterError.reportError(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stackTrace,
+          library: 'wishes section',
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -1191,9 +1258,17 @@ class _WishesSectionState extends State<WishesSection> {
       return;
     }
 
+    final responses = _responses;
+    if (responses == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Tilaklar hozircha ulanmadi.')),
+      );
+      return;
+    }
+
     setState(() => _isSubmitting = true);
     try {
-      await _responses.add({
+      await responses.add({
         'name': _nameController.text.trim(),
         'message': _messageController.text.trim(),
         'createdAt': FieldValue.serverTimestamp(),
@@ -1228,6 +1303,7 @@ class _WishesSectionState extends State<WishesSection> {
   @override
   Widget build(BuildContext context) {
     final compact = MediaQuery.sizeOf(context).width < 600;
+    final responses = _responses;
 
     return ColoredBox(
       color: AppColors.warmBand,
@@ -1286,10 +1362,18 @@ class _WishesSectionState extends State<WishesSection> {
                     ),
                   ),
                   SizedBox(height: compact ? 44 : 58),
-                  ScrollReveal(
-                    delay: const Duration(milliseconds: 440),
-                    child: WishesList(responses: _responses),
-                  ),
+                  if (responses == null)
+                    const ScrollReveal(
+                      delay: Duration(milliseconds: 440),
+                      child: InlineWarning(
+                        text: 'Tilaklar bo\'limi hozircha ulanmadi.',
+                      ),
+                    )
+                  else
+                    ScrollReveal(
+                      delay: const Duration(milliseconds: 440),
+                      child: WishesList(responses: responses),
+                    ),
                 ],
               ),
             ),

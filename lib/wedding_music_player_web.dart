@@ -8,6 +8,10 @@ external web.HTMLAudioElement? get _weddingMusicAudio;
 
 class WeddingMusicPlayer {
   WeddingMusicPlayer() {
+    final existingAudio = _weddingMusicAudio;
+    _audio = existingAudio ?? web.HTMLAudioElement();
+    final createdAudio = existingAudio == null;
+
     _audio
       ..src = 'assets/assets/audio/music.mp3'
       ..preload = 'auto'
@@ -26,18 +30,19 @@ class WeddingMusicPlayer {
     if (_audio.parentElement == null) {
       web.document.body?.appendChild(_audio);
     }
-    _audio.load();
+    if (createdAudio) {
+      _audio.load();
+    }
     _scheduleAutoplayAttempts();
   }
 
-  final web.HTMLAudioElement _audio =
-      _weddingMusicAudio ?? web.HTMLAudioElement();
+  late final web.HTMLAudioElement _audio;
   final List<Timer> _autoplayTimers = [];
 
-  bool get isPlaying => !_audio.paused;
+  bool get isPlaying => !_audio.paused && !_audio.muted;
 
   void _scheduleAutoplayAttempts() {
-    unawaited(play(restart: true));
+    unawaited(play());
 
     for (final delay in const [
       Duration(milliseconds: 350),
@@ -55,25 +60,21 @@ class WeddingMusicPlayer {
     }
   }
 
-  Future<bool> play({bool restart = false}) async {
+  Future<bool> play({bool restart = false, bool userGesture = false}) async {
     try {
       if (restart || _audio.ended) {
         _audio.currentTime = 0;
       }
-      _audio.muted = false;
-      await _audio.play().toDart;
-      return true;
-    } catch (_) {
-      try {
-        _audio.muted = true;
-        await _audio.play().toDart;
-        Timer(const Duration(milliseconds: 160), () {
-          _audio.muted = false;
-        });
-        return true;
-      } catch (_) {
+
+      if (_audio.muted && !userGesture) {
         return false;
       }
+
+      _audio.muted = false;
+      await _audio.play().toDart;
+      return isPlaying;
+    } catch (_) {
+      return false;
     }
   }
 
@@ -82,7 +83,7 @@ class WeddingMusicPlayer {
       pause();
       return false;
     }
-    return play();
+    return play(userGesture: true);
   }
 
   void pause() {
