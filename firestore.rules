@@ -1,0 +1,27 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /wedding_responses/{responseId} {
+      allow read: if true;
+      allow create: if isValidResponse();
+      allow update, delete: if false;
+    }
+  }
+}
+
+function isValidResponse() {
+  let data = request.resource.data;
+  return data.keys().hasOnly([
+      'name',
+      'message',
+      'createdAt'
+    ])
+    && data.name is string
+    && data.name.size() >= 2
+    && data.name.size() <= 80
+    && data.message is string
+    && data.message.size() >= 3
+    && data.message.size() <= 700
+    && data.createdAt == request.time;
+}
