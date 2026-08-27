@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -113,6 +114,8 @@ class _InvitationPageState extends State<InvitationPage> {
   bool _musicPlaying = false;
   bool _gestureMusicFallbackEnabled = true;
   bool _gestureMusicAttempted = false;
+  bool _snappingToSection = false;
+  ScrollDirection _lastScrollDirection = ScrollDirection.idle;
   Timer? _autoplayRetryTimer;
 
   @override
@@ -142,6 +145,70 @@ class _InvitationPageState extends State<InvitationPage> {
     if (position.maxScrollExtent > 0 && position.pixels <= 0) {
       _scrollController.jumpTo(1);
     }
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification is UserScrollNotification) {
+      _lastScrollDirection = notification.direction;
+    }
+
+    if (notification is ScrollEndNotification) {
+      _snapToPrimarySection();
+    }
+
+    return false;
+  }
+
+  void _snapToPrimarySection() {
+    if (!_scrollController.hasClients || _snappingToSection) {
+      return;
+    }
+
+    final sectionExtent = sectionHeight(context);
+    if (sectionExtent <= 0) {
+      return;
+    }
+
+    const primarySectionCount = 3;
+    final position = _scrollController.position;
+    final currentOffset = position.pixels;
+    final lastPrimaryOffset = sectionExtent * (primarySectionCount - 1);
+    final snapLimit = lastPrimaryOffset + sectionExtent * 0.52;
+
+    if (currentOffset > snapLimit) {
+      return;
+    }
+
+    final page = currentOffset / sectionExtent;
+    final targetIndex = switch (_lastScrollDirection) {
+      ScrollDirection.reverse => page.floor() + 1,
+      ScrollDirection.forward => page.ceil() - 1,
+      ScrollDirection.idle => page.round(),
+    }.clamp(0, primarySectionCount - 1).toInt();
+    final rawTarget = targetIndex == 0 ? 1.0 : sectionExtent * targetIndex;
+    final target = rawTarget.clamp(0.0, position.maxScrollExtent);
+
+    if ((currentOffset - target).abs() < 2) {
+      return;
+    }
+
+    _snappingToSection = true;
+    unawaited(
+      _scrollController
+          .animateTo(
+            target,
+            duration: const Duration(milliseconds: 520),
+            curve: Curves.easeOutCubic,
+          )
+          .whenComplete(() {
+            if (!mounted) {
+              return;
+            }
+            _snappingToSection = false;
+            _lastScrollDirection = ScrollDirection.idle;
+            _keepTelegramWebViewOpen();
+          }),
+    );
   }
 
   void _scheduleAutoplay() {
@@ -213,17 +280,20 @@ class _InvitationPageState extends State<InvitationPage> {
             Listener(
               behavior: HitTestBehavior.translucent,
               onPointerDown: (_) => _startMusicFromGesture(),
-              child: ScrollRevealScope(
-                enabled: true,
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  physics: const ClampingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      const MainInvitationFlow(),
-                      WishesSection(firebaseReady: widget.firebaseReady),
-                      const ClosingSection(),
-                    ],
+              child: NotificationListener<ScrollNotification>(
+                onNotification: _handleScrollNotification,
+                child: ScrollRevealScope(
+                  enabled: true,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const ClampingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        const MainInvitationFlow(),
+                        WishesSection(firebaseReady: widget.firebaseReady),
+                        const ClosingSection(),
+                      ],
+                    ),
                   ),
                 ),
               ),
