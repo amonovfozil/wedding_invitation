@@ -53,8 +53,8 @@ class InvitationContent {
   static const weekDay = 'Seshanba';
   static const dayAndMonth = '8-Sentabr';
   static const timeText = 'Soat 18:00 da';
-  static const venueName = '"Murod Fayz" Restorani';
-  static const venueAddress = 'Buxoro shahar 6-mikrayon';
+  static const venueName = '"Murod Fayz" Restorani ';
+  static const venueAddress = 'Buxoro shahar 6-mikrayon ';
   static const googleMap = 'https://maps.app.goo.gl/fRRqZjoH4pH7T9oD8';
   static const yandexMap = 'https://yandex.uz/maps/-/CTDLQRnG';
 
