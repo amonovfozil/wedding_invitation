@@ -64,10 +64,15 @@
     #html-fallback {
       position: fixed;
       inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: none;
+      overscroll-behavior-y: none;
       box-sizing: border-box;
       background: #FAF9F6;
       color: #966E52;
@@ -76,88 +81,698 @@
       z-index: 10000;
     }
 
+    #html-fallback * {
+      box-sizing: border-box;
+    }
+
+    #fallback-stars {
+      position: fixed;
+      inset: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .fallback-dot,
+    .fallback-plus {
+      position: absolute;
+      display: block;
+      opacity: 0.42;
+      animation: fallbackTwinkle 4.8s ease-in-out infinite;
+    }
+
+    .fallback-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #B58A48;
+      box-shadow: 0 0 9px rgba(229, 184, 90, 0.24);
+    }
+
+    .fallback-plus {
+      width: 13px;
+      height: 13px;
+    }
+
+    .fallback-plus::before,
+    .fallback-plus::after {
+      position: absolute;
+      content: '';
+      background: rgba(203, 162, 91, 0.36);
+      border-radius: 999px;
+    }
+
+    .fallback-plus::before {
+      left: 0;
+      right: 0;
+      top: 6px;
+      height: 1px;
+    }
+
+    .fallback-plus::after {
+      top: 0;
+      bottom: 0;
+      left: 6px;
+      width: 1px;
+    }
+
+    @keyframes fallbackTwinkle {
+      0%,
+      100% {
+        opacity: 0.2;
+        transform: scale(0.86);
+      }
+
+      50% {
+        opacity: 0.62;
+        transform: scale(1);
+      }
+    }
+
+    .fallback-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .fallback-section {
+      width: 100%;
+      min-height: 100vh;
+      padding: 44px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fallback-hero {
+      position: relative;
+      padding-top: 70px;
+      padding-bottom: 112px;
+    }
+
+    .fallback-details,
+    .fallback-countdown {
+      min-height: 0;
+      padding-top: 54px;
+      padding-bottom: 42px;
+    }
+
+    .fallback-countdown {
+      padding-bottom: 86px;
+    }
+
+    .fallback-center {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .fallback-verse {
+      color: rgba(150, 110, 82, 0.62);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .fallback-verse-subtitle {
+      margin-top: 8px;
+      color: rgba(150, 110, 82, 0.62);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
     #html-fallback h1 {
-      margin: 0 0 20px;
-      font-size: clamp(56px, 15vw, 94px);
+      margin: 58px 0 0;
+      font-size: 88px;
       line-height: 0.98;
       font-weight: 700;
     }
 
+    .fallback-va {
+      display: block;
+      margin: 8px 0 10px;
+      color: rgba(150, 110, 82, 0.72);
+      font-size: 22px;
+      font-style: italic;
+      line-height: 1;
+    }
+
+    .fallback-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 17px;
+      width: 154px;
+      margin: 28px auto 0;
+      color: #966E52;
+      font-size: 18px;
+    }
+
+    .fallback-divider::before,
+    .fallback-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #EAE5DE;
+    }
+
     #html-fallback p {
-      margin: 10px 0 0;
+      margin: 26px 0 0;
       color: #3F3A37;
       font-size: 22px;
+      line-height: 1.35;
+    }
+
+    #html-fallback .fallback-quote {
+      max-width: 330px;
+      margin: 24px auto 0;
+      color: rgba(63, 58, 55, 0.68);
+      font-size: 16px;
+      font-style: italic;
+      line-height: 1.5;
     }
 
     #html-fallback .date {
+      margin-top: 34px;
       color: #966E52;
       font-size: 24px;
       font-weight: 700;
+    }
+
+    .fallback-thread {
+      width: 1px;
+      height: 92px;
+      margin: 42px auto 0;
+      background: #EAE5DE;
+    }
+
+    .fallback-details .fallback-thread {
+      height: 70px;
+      margin-top: 0;
+      margin-bottom: 38px;
+    }
+
+    .fallback-cards {
+      width: 100%;
+      max-width: 448px;
+      margin: 0 auto;
+    }
+
+    .fallback-card {
+      width: 100%;
+      margin: 0 auto 24px;
+      padding: 28px;
+      border-radius: 28px;
+      background: #FFFFFF;
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.07);
+      text-align: left;
+    }
+
+    .fallback-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .fallback-card h2,
+    .fallback-countdown h2 {
+      margin: 0 0 28px;
+      color: #3F3A37;
+      font-size: 24px;
+      line-height: 1.1;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .fallback-row {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-top: 22px;
+    }
+
+    .fallback-row:first-of-type {
+      margin-top: 0;
+    }
+
+    .fallback-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #F1ECE7;
+      color: #966E52;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .fallback-label {
+      margin: 0 0 6px;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+
+    .fallback-value {
+      margin: 0;
+      color: #3F3A37;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .fallback-muted {
+      margin: 4px 0 0;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .fallback-map-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .fallback-map-button {
+      min-height: 46px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #966E52;
+      border-radius: 8px;
+      color: #966E52;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .fallback-map-button.filled {
+      background: #966E52;
+      color: #FFFFFF;
+    }
+
+    .fallback-countdown {
+      text-align: center;
+    }
+
+    .fallback-countdown h2 {
+      margin-bottom: 28px;
+      font-size: 34px;
+    }
+
+    .fallback-countdown-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 22px;
+    }
+
+    .fallback-countdown-item {
+      width: 92px;
+    }
+
+    .fallback-countdown-value {
+      width: 92px;
+      height: 108px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #FFFFFF;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.05);
+      color: #966E52;
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    .fallback-countdown-label {
+      margin-top: 15px;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+    }
+
+    @media (max-width: 600px) {
+      .fallback-section {
+        padding-left: 26px;
+        padding-right: 26px;
+      }
+
+      .fallback-hero {
+        padding-top: 54px;
+        padding-bottom: 96px;
+      }
+
+      .fallback-details,
+      .fallback-countdown {
+        padding-top: 38px;
+      }
+
+      .fallback-verse {
+        font-size: 23px;
+      }
+
+      .fallback-verse-subtitle {
+        font-size: 12px;
+      }
+
+      #html-fallback h1 {
+        margin-top: 46px;
+        font-size: 58px;
+      }
+
+      .fallback-va {
+        font-size: 20px;
+      }
+
+      #html-fallback p {
+        margin-top: 22px;
+        font-size: 19px;
+      }
+
+      #html-fallback .fallback-quote {
+        max-width: 252px;
+        margin-top: 18px;
+        font-size: 14px;
+      }
+
+      #html-fallback .date {
+        margin-top: 26px;
+        font-size: 22px;
+      }
+
+      .fallback-thread {
+        height: 70px;
+        margin-top: 34px;
+      }
+
+      .fallback-details .fallback-thread {
+        height: 54px;
+        margin-bottom: 30px;
+      }
+
+      .fallback-card {
+        padding: 24px 22px 26px;
+        border-radius: 22px;
+      }
+
+      .fallback-card h2 {
+        font-size: 22px;
+        margin-bottom: 24px;
+      }
+
+      .fallback-row {
+        gap: 16px;
+      }
+
+      .fallback-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+      }
+
+      .fallback-value {
+        font-size: 17px;
+      }
+
+      .fallback-muted {
+        font-size: 15px;
+      }
+
+      .fallback-map-buttons {
+        flex-direction: column;
+      }
+
+      .fallback-countdown h2 {
+        font-size: 29px;
+      }
+
+      .fallback-countdown-grid {
+        gap: 14px;
+      }
+
+      .fallback-countdown-item {
+        width: 78px;
+      }
+
+      .fallback-countdown-value {
+        width: 78px;
+        height: 92px;
+        font-size: 32px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div id="html-fallback" aria-hidden="true">
-    <div>
-      <h1>Fozil<br><span style="font-size: 0.25em; font-style: italic;">va</span><br>Dilafruz</h1>
-      <p>Sizni taklif etamiz!</p>
-      <p class="date">8 Sentabr, 2026</p>
-    </div>
+    <div id="fallback-stars"></div>
+    <main class="fallback-content">
+      <section class="fallback-section fallback-hero">
+        <div class="fallback-center">
+          <div class="fallback-verse">✦ &nbsp; وَخَلَقْنَاكُمْ أَزْوَاجًا &nbsp; ✦</div>
+          <div class="fallback-verse-subtitle">Va sizlarni juft qilib yaratdik.<br>("Naba" surasi 8-oyat)</div>
+          <h1>Fozil<span class="fallback-va">va</span>Dilafruz</h1>
+          <div class="fallback-divider">♥</div>
+          <p>Sizni taklif etamiz!</p>
+          <p class="fallback-quote">"Muhabbat - bu ikki yulduzning bir osmonda uchrashishi"</p>
+          <p class="date">8 Sentabr, 2026</p>
+          <div class="fallback-thread"></div>
+        </div>
+      </section>
+
+      <section class="fallback-section fallback-details">
+        <div class="fallback-center">
+          <div class="fallback-thread"></div>
+          <div class="fallback-cards">
+            <article class="fallback-card">
+              <h2>Qachon</h2>
+              <div class="fallback-row">
+                <span class="fallback-icon">□</span>
+                <div>
+                  <div class="fallback-label">Sana</div>
+                  <div class="fallback-value">Seshanba, 8-Sentabr</div>
+                </div>
+              </div>
+              <div class="fallback-row">
+                <span class="fallback-icon">○</span>
+                <div>
+                  <div class="fallback-label">Vaqt</div>
+                  <div class="fallback-value">Soat 18:00 da</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="fallback-card">
+              <h2>Manzil</h2>
+              <div class="fallback-row">
+                <span class="fallback-icon">⌖</span>
+                <div>
+                  <div class="fallback-value">"Murod Fayz" Restorani</div>
+                  <div class="fallback-muted">Buxoro shahar 6-mikrayon</div>
+                </div>
+              </div>
+              <div class="fallback-map-buttons">
+                <a class="fallback-map-button filled" href="https://maps.app.goo.gl/fRRqZjoH4pH7T9oD8" target="_blank" rel="noopener">Google Xarita</a>
+                <a class="fallback-map-button" href="https://yandex.uz/maps/-/CTDLQRnG" target="_blank" rel="noopener">Yandex Xarita</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="fallback-section fallback-countdown">
+        <div class="fallback-center">
+          <h2>To'ygacha qolgan vaqt</h2>
+          <div class="fallback-countdown-grid">
+            <div class="fallback-countdown-item">
+              <div class="fallback-countdown-value" id="fallback-days">00</div>
+              <div class="fallback-countdown-label">KUN</div>
+            </div>
+            <div class="fallback-countdown-item">
+              <div class="fallback-countdown-value" id="fallback-hours">00</div>
+              <div class="fallback-countdown-label">SOAT</div>
+            </div>
+            <div class="fallback-countdown-item">
+              <div class="fallback-countdown-value" id="fallback-minutes">00</div>
+              <div class="fallback-countdown-label">MIN</div>
+            </div>
+            <div class="fallback-countdown-item">
+              <div class="fallback-countdown-value" id="fallback-seconds">00</div>
+              <div class="fallback-countdown-label">SEK</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
   <audio id="wedding-music" src="assets/assets/audio/music.mp3" autoplay loop playsinline preload="auto"></audio>
   <script>
     (function () {
       var audio = document.getElementById('wedding-music');
       var fallback = document.getElementById('html-fallback');
+      var stars = document.getElementById('fallback-stars');
+      var userAgent = navigator.userAgent || '';
+      var forceFlutter = window.location.search.indexOf('flutter=1') !== -1;
+      var forceHtml = window.location.search.indexOf('html=1') !== -1;
+      var useHtmlFallback = forceHtml || (!forceFlutter && /Android/i.test(userAgent));
       window.weddingMusicAudio = audio;
 
-      if (!audio) {
-        return;
-      }
-
-      audio.volume = 0.42;
-      audio.muted = false;
-      audio.style.display = 'none';
-
-      function playWeddingMusic(allowMutedFallback) {
-        var attempt = audio.play();
-        if (attempt && typeof attempt.catch === 'function') {
-          attempt.catch(function () {
-            if (!allowMutedFallback) {
-              return;
+      function clearOldFlutterCache() {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.getRegistrations) {
+          navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            for (var i = 0; i < registrations.length; i++) {
+              registrations[i].unregister();
             }
+          }).catch(function () { });
+        }
 
-            audio.muted = true;
-            var mutedAttempt = audio.play();
-            if (mutedAttempt && typeof mutedAttempt.catch === 'function') {
-              mutedAttempt.catch(function () { });
+        if (window.caches && window.caches.keys) {
+          window.caches.keys().then(function (keys) {
+            for (var i = 0; i < keys.length; i++) {
+              window.caches.delete(keys[i]);
             }
-          });
+          }).catch(function () { });
         }
       }
 
-      var delays = [0, 250, 700, 1400, 2600];
-      for (var i = 0; i < delays.length; i++) {
-        var delay = delays[i];
-        setTimeout(function () {
-          if (audio.paused) {
-            playWeddingMusic(true);
+      clearOldFlutterCache();
+
+      if (fallback) {
+        fallback.setAttribute('aria-hidden', useHtmlFallback ? 'false' : 'true');
+      }
+
+      function createFallbackStars() {
+        if (!stars) {
+          return;
+        }
+
+        for (var i = 0; i < 92; i++) {
+          var star = document.createElement('span');
+          var plus = i % 9 === 0;
+          var x = (i * 37 + 11) % 100;
+          var y = (i * 53 + 7) % 100;
+          var delay = ((i * 23) % 48) / 10;
+          star.className = plus ? 'fallback-plus' : 'fallback-dot';
+          star.style.left = x + 'vw';
+          star.style.top = y + 'vh';
+          star.style.animationDelay = delay + 's';
+          if (!plus) {
+            var size = 2 + (i % 3);
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
           }
-        }, delay);
+          stars.appendChild(star);
+        }
       }
 
-      function unlockMusic() {
+      function padNumber(value) {
+        return value < 10 ? '0' + value : String(value);
+      }
+
+      function updateFallbackCountdown() {
+        var weddingTime = new Date(2026, 8, 8, 18, 0, 0).getTime();
+        var remaining = Math.max(0, weddingTime - Date.now());
+        var totalSeconds = Math.floor(remaining / 1000);
+        var days = Math.floor(totalSeconds / 86400);
+        var hours = Math.floor(totalSeconds / 3600) % 24;
+        var minutes = Math.floor(totalSeconds / 60) % 60;
+        var seconds = totalSeconds % 60;
+        var dayElement = document.getElementById('fallback-days');
+        var hourElement = document.getElementById('fallback-hours');
+        var minuteElement = document.getElementById('fallback-minutes');
+        var secondElement = document.getElementById('fallback-seconds');
+
+        if (dayElement) {
+          dayElement.textContent = padNumber(days);
+        }
+        if (hourElement) {
+          hourElement.textContent = padNumber(hours);
+        }
+        if (minuteElement) {
+          minuteElement.textContent = padNumber(minutes);
+        }
+        if (secondElement) {
+          secondElement.textContent = padNumber(seconds);
+        }
+      }
+
+      function loadFlutter() {
+        if (useHtmlFallback) {
+          return;
+        }
+
+        var flutterScript = document.createElement('script');
+        flutterScript.src = 'flutter_bootstrap.js';
+        flutterScript.async = true;
+        document.body.appendChild(flutterScript);
+      }
+
+      createFallbackStars();
+      updateFallbackCountdown();
+      setInterval(updateFallbackCountdown, 1000);
+
+      if (audio) {
+        audio.volume = 0.42;
         audio.muted = false;
-        playWeddingMusic(false);
-        window.removeEventListener('pointerdown', unlockMusic, true);
-        window.removeEventListener('touchstart', unlockMusic, true);
-        window.removeEventListener('click', unlockMusic, true);
-      }
+        audio.style.display = 'none';
 
-      window.addEventListener('pointerdown', unlockMusic, true);
-      window.addEventListener('touchstart', unlockMusic, true);
-      window.addEventListener('click', unlockMusic, true);
+        function playWeddingMusic(allowMutedFallback) {
+          var attempt = audio.play();
+          if (attempt && typeof attempt.catch === 'function') {
+            attempt.catch(function () {
+              if (!allowMutedFallback) {
+                return;
+              }
+
+              audio.muted = true;
+              var mutedAttempt = audio.play();
+              if (mutedAttempt && typeof mutedAttempt.catch === 'function') {
+                mutedAttempt.catch(function () { });
+              }
+            });
+          }
+        }
+
+        var delays = [0, 250, 700, 1400, 2600];
+        for (var i = 0; i < delays.length; i++) {
+          var delay = delays[i];
+          setTimeout(function () {
+            if (audio.paused) {
+              playWeddingMusic(true);
+            }
+          }, delay);
+        }
+
+        function unlockMusic() {
+          audio.muted = false;
+          playWeddingMusic(false);
+          window.removeEventListener('pointerdown', unlockMusic, true);
+          window.removeEventListener('touchstart', unlockMusic, true);
+          window.removeEventListener('click', unlockMusic, true);
+        }
+
+        window.addEventListener('pointerdown', unlockMusic, true);
+        window.addEventListener('touchstart', unlockMusic, true);
+        window.addEventListener('click', unlockMusic, true);
+      }
 
       var lastTouchY = 0;
       window.addEventListener('touchstart', function (event) {
@@ -173,17 +788,20 @@
         var currentTouchY = event.touches[0].clientY;
         var pullingDown = currentTouchY > lastTouchY;
         lastTouchY = currentTouchY;
+        var scrollTop = fallback ? fallback.scrollTop : window.pageYOffset;
 
-        if (pullingDown && window.scrollY <= 0) {
+        if (pullingDown && scrollTop <= 0) {
           event.preventDefault();
         }
       }, { passive: false });
 
       window.addEventListener('flutter-first-frame', function () {
-        if (fallback && fallback.parentNode) {
+        if (!useHtmlFallback && fallback && fallback.parentNode) {
           fallback.parentNode.removeChild(fallback);
         }
       });
+
+      loadFlutter();
     })();
   </script>
   <!--
@@ -194,7 +812,6 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
-  <script src="flutter_bootstrap.js" async></script>
 </body>
 
 </html>
