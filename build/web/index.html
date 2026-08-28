@@ -68,6 +68,8 @@
       right: 0;
       bottom: 0;
       left: 0;
+      width: 100vw;
+      max-width: 100vw;
       overflow-x: hidden;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -155,6 +157,9 @@
     .fallback-content {
       position: relative;
       z-index: 1;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     #html-fallback.js-ready .fallback-reveal {
@@ -202,6 +207,7 @@
       width: 100%;
       max-width: 560px;
       margin: 0 auto;
+      min-width: 0;
     }
 
     .fallback-verse {
@@ -451,6 +457,252 @@
       letter-spacing: 1.3px;
     }
 
+    .fallback-wishes {
+      min-height: 100vh;
+      padding-top: 82px;
+      padding-bottom: 118px;
+      background: #F2EFEB;
+    }
+
+    .fallback-closing {
+      min-height: 100vh;
+      padding-top: 86px;
+      padding-bottom: 82px;
+      background: #FFFFFF;
+    }
+
+    .fallback-wishes-content,
+    .fallback-closing-content {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      min-width: 0;
+    }
+
+    .fallback-wishes-content {
+      max-width: 640px;
+    }
+
+    .fallback-section-title {
+      margin: 0;
+      color: #966E52;
+      font-size: 31px;
+      line-height: 1.12;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    #html-fallback .fallback-section-subtitle {
+      max-width: 420px;
+      margin: 14px auto 0;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      font-style: italic;
+      line-height: 1.45;
+    }
+
+    .fallback-wish-card {
+      width: 100%;
+      margin: 46px auto 0;
+      padding: 28px;
+      border-radius: 28px;
+      background: #FFFFFF;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.06);
+      text-align: left;
+    }
+
+    .fallback-form-label {
+      display: block;
+      margin: 0 0 10px;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .fallback-input-wrap {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .fallback-input-wrap svg {
+      position: absolute;
+      left: 16px;
+      top: 19px;
+      width: 18px;
+      height: 18px;
+      stroke: rgba(143, 138, 134, 0.78);
+      pointer-events: none;
+    }
+
+    .fallback-input,
+    .fallback-textarea {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      outline: 0;
+      background: #FCFBF9;
+      color: #3F3A37;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.45;
+      transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .fallback-input {
+      min-height: 56px;
+      padding: 17px 16px 17px 48px;
+    }
+
+    .fallback-textarea {
+      min-height: 152px;
+      padding: 17px 16px;
+      resize: vertical;
+    }
+
+    .fallback-input:focus,
+    .fallback-textarea:focus {
+      border-color: rgba(150, 110, 82, 0.42);
+      box-shadow: 0 0 0 3px rgba(150, 110, 82, 0.08);
+    }
+
+    .fallback-submit {
+      width: 100%;
+      min-height: 48px;
+      border: 0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(150, 110, 82, 0.62);
+      color: #FFFFFF;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fallback-submit svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+    }
+
+    .fallback-submit:disabled {
+      cursor: default;
+      opacity: 0.62;
+    }
+
+    .fallback-wish-status {
+      min-height: 20px;
+      margin-top: 14px;
+      color: #966E52;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .fallback-wish-status.error {
+      color: #9B4A42;
+    }
+
+    .fallback-wish-list {
+      margin-top: 42px;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      font-style: italic;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .fallback-wish-tile {
+      margin-top: 14px;
+      padding: 18px;
+      border: 1px solid #EAE5DE;
+      border-radius: 16px;
+      background: #FFFFFF;
+      text-align: left;
+    }
+
+    .fallback-wish-tile:first-child {
+      margin-top: 0;
+    }
+
+    .fallback-wish-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #3F3A37;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .fallback-wish-heart {
+      color: rgba(150, 110, 82, 0.72);
+      font-size: 15px;
+    }
+
+    .fallback-wish-date {
+      margin-left: auto;
+      color: #8F8A86;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .fallback-wish-message {
+      margin-top: 10px;
+      color: #8F8A86;
+      font-style: normal;
+      line-height: 1.45;
+    }
+
+    .fallback-closing .fallback-divider {
+      width: 380px;
+      max-width: 100%;
+      margin-top: 0;
+    }
+
+    #html-fallback .fallback-closing-title {
+      margin: 32px 0 0;
+      color: #966E52;
+      font-size: 30px;
+      font-style: italic;
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    #html-fallback .fallback-closing-copy {
+      max-width: 480px;
+      margin: 24px auto 0;
+      color: #8F8A86;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .fallback-signature {
+      margin-top: 26px;
+      color: #966E52;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     .fallback-music-toggle {
       position: fixed;
       right: 22px;
@@ -609,17 +861,70 @@
       }
 
       .fallback-countdown-grid {
+        flex-wrap: nowrap;
         gap: 8px;
       }
 
       .fallback-countdown-item {
-        width: 64px;
+        width: clamp(52px, 17vw, 64px);
+        min-width: 0;
       }
 
       .fallback-countdown-value {
-        width: 64px;
-        height: 80px;
-        font-size: 28px;
+        width: clamp(52px, 17vw, 64px);
+        height: clamp(66px, 21vw, 80px);
+        font-size: clamp(24px, 7.2vw, 28px);
+      }
+
+      .fallback-wishes,
+      .fallback-closing {
+        padding-top: 70px;
+        padding-bottom: 96px;
+      }
+
+      .fallback-section-title {
+        font-size: 27px;
+      }
+
+      #html-fallback .fallback-section-subtitle {
+        max-width: 292px;
+        font-size: 14px;
+      }
+
+      .fallback-wish-card {
+        width: 100%;
+        max-width: 340px;
+        margin-top: 34px;
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .fallback-input {
+        min-height: 54px;
+        font-size: 15px;
+      }
+
+      .fallback-textarea {
+        min-height: 150px;
+        font-size: 15px;
+      }
+
+      .fallback-wish-list {
+        width: 100%;
+        max-width: 340px;
+        margin: 40px auto 0;
+        font-size: 15px;
+      }
+
+      #html-fallback .fallback-closing-title {
+        margin-top: 26px;
+        font-size: 27px;
+      }
+
+      #html-fallback .fallback-closing-copy {
+        max-width: 320px;
+        margin-top: 20px;
+        font-size: 15px;
       }
 
       .fallback-music-toggle {
@@ -730,6 +1035,49 @@
           </div>
         </div>
       </section>
+
+      <section id="wishes" class="fallback-section fallback-wishes">
+        <div class="fallback-wishes-content">
+          <h2 class="fallback-section-title fallback-reveal">Tilaklar va Izohlar</h2>
+          <p class="fallback-section-subtitle fallback-reveal" style="--fallback-delay: 120ms">Barcha mehmonlarimizning tilaklarini shu yerda ko'rishingiz mumkin</p>
+
+          <form id="fallback-wish-form" class="fallback-wish-card fallback-reveal" style="--fallback-delay: 230ms" novalidate>
+            <label class="fallback-form-label" for="fallback-name">Ismingiz</label>
+            <div class="fallback-input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 21a8 8 0 0 0-16 0"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input id="fallback-name" class="fallback-input" type="text" autocomplete="name" maxlength="80" placeholder="Ismingizni kiriting">
+            </div>
+
+            <label class="fallback-form-label" for="fallback-message">Tilagingiz</label>
+            <div class="fallback-input-wrap">
+              <textarea id="fallback-message" class="fallback-textarea" rows="5" maxlength="700" placeholder="O'z tilaklaringizni shu yerda qoldiring..."></textarea>
+            </div>
+
+            <button id="fallback-wish-submit" class="fallback-submit" type="submit">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m22 2-7 20-4-9-9-4Z"></path>
+                <path d="M22 2 11 13"></path>
+              </svg>
+              <span id="fallback-submit-label">Yuborish</span>
+            </button>
+          </form>
+
+          <div id="fallback-wish-status" class="fallback-wish-status" aria-live="polite"></div>
+          <div id="fallback-wish-list" class="fallback-wish-list fallback-reveal" style="--fallback-delay: 350ms">Tilaklar yuklanmoqda...</div>
+        </div>
+      </section>
+
+      <section id="closing" class="fallback-section fallback-closing">
+        <div class="fallback-closing-content">
+          <div class="fallback-divider fallback-reveal">♥</div>
+          <h2 class="fallback-closing-title fallback-reveal" style="--fallback-delay: 130ms">Sizni kutamiz!</h2>
+          <p class="fallback-closing-copy fallback-reveal" style="--fallback-delay: 240ms">Biz quvonchli kunimizni siz bilan birga nishonlashdan juda mamnunmiz. Bizning hayot yo'limizning bir bo'lagi bo'lganingiz uchun rahmat.</p>
+          <div class="fallback-signature fallback-reveal" style="--fallback-delay: 350ms">Fozil &amp; Dilafruz</div>
+        </div>
+      </section>
     </main>
   </div>
   <button id="fallback-music-toggle" class="fallback-music-toggle" type="button" aria-label="Musiqani yoqish">
@@ -786,6 +1134,36 @@
         musicToggle.style.display = useHtmlFallback ? 'flex' : 'none';
       }
 
+      function syncFallbackViewportWidth() {
+        if (!fallback || !useHtmlFallback) {
+          return;
+        }
+
+        var visibleWidth = window.innerWidth || document.documentElement.clientWidth;
+        if (document.documentElement && document.documentElement.clientWidth) {
+          visibleWidth = Math.min(visibleWidth, document.documentElement.clientWidth);
+        }
+        if (window.outerWidth) {
+          visibleWidth = Math.min(visibleWidth, window.outerWidth);
+        }
+        if (window.visualViewport && window.visualViewport.width) {
+          visibleWidth = Math.min(visibleWidth, window.visualViewport.width);
+        }
+        if (/Mobile/i.test(userAgent)) {
+          visibleWidth = Math.min(visibleWidth, 430);
+        }
+        if (visibleWidth > 0) {
+          fallback.style.width = Math.floor(visibleWidth) + 'px';
+          fallback.style.maxWidth = Math.floor(visibleWidth) + 'px';
+        }
+      }
+
+      syncFallbackViewportWidth();
+      window.addEventListener('resize', syncFallbackViewportWidth);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', syncFallbackViewportWidth);
+      }
+
       function createFallbackStars() {
         if (!stars) {
           return;
@@ -798,8 +1176,8 @@
           var y = (i * 53 + 7) % 100;
           var delay = ((i * 23) % 48) / 10;
           star.className = plus ? 'fallback-plus' : 'fallback-dot';
-          star.style.left = x + 'vw';
-          star.style.top = y + 'vh';
+          star.style.left = x + '%';
+          star.style.top = y + '%';
           star.style.animationDelay = delay + 's';
           if (!plus) {
             var size = 2 + (i % 3);
@@ -818,17 +1196,29 @@
         fallback.className += ' js-ready';
         var elements = fallback.querySelectorAll('.fallback-reveal');
 
-        if (!('IntersectionObserver' in window)) {
-          for (var i = 0; i < elements.length; i++) {
-            elements[i].className += ' is-visible';
+        function showElement(element) {
+          if (element.className.indexOf('is-visible') === -1) {
+            element.className += ' is-visible';
           }
+        }
+
+        function revealAllFallbackElements() {
+          for (var index = 0; index < elements.length; index++) {
+            showElement(elements[index]);
+          }
+        }
+
+        window.setTimeout(revealAllFallbackElements, 1600);
+
+        if (!('IntersectionObserver' in window)) {
+          revealAllFallbackElements();
           return;
         }
 
         var observer = new IntersectionObserver(function (entries) {
           for (var i = 0; i < entries.length; i++) {
             if (entries[i].isIntersecting) {
-              entries[i].target.className += ' is-visible';
+              showElement(entries[i].target);
               observer.unobserve(entries[i].target);
             }
           }
@@ -874,6 +1264,238 @@
         }
       }
 
+      function setupFallbackWishes() {
+        if (!useHtmlFallback) {
+          return;
+        }
+
+        var form = document.getElementById('fallback-wish-form');
+        var nameInput = document.getElementById('fallback-name');
+        var messageInput = document.getElementById('fallback-message');
+        var submitButton = document.getElementById('fallback-wish-submit');
+        var submitLabel = document.getElementById('fallback-submit-label');
+        var status = document.getElementById('fallback-wish-status');
+        var list = document.getElementById('fallback-wish-list');
+        var apiKey = 'AIzaSyCgN1H3_-UdolPlygEouTcabOj0Mtl0pF8';
+        var projectId = 'invition-4131d';
+        var projectPath = 'projects/' + projectId;
+        var documentsPath = projectPath + '/databases/(default)/documents';
+        var firestoreBase = 'https://firestore.googleapis.com/v1/' + documentsPath;
+
+        function setStatus(message, isError) {
+          if (!status) {
+            return;
+          }
+          status.textContent = message || '';
+          status.className = isError
+            ? 'fallback-wish-status error'
+            : 'fallback-wish-status';
+        }
+
+        function setSubmitting(isSubmitting) {
+          if (submitButton) {
+            submitButton.disabled = isSubmitting;
+          }
+          if (submitLabel) {
+            submitLabel.textContent = isSubmitting ? 'Yuborilmoqda' : 'Yuborish';
+          }
+        }
+
+        function fieldString(fields, key) {
+          if (!fields || !fields[key]) {
+            return '';
+          }
+          return fields[key].stringValue || '';
+        }
+
+        function formatWishDate(value) {
+          if (!value) {
+            return '';
+          }
+          var date = new Date(value);
+          if (isNaN(date.getTime())) {
+            return '';
+          }
+          var months = [
+            'Yan',
+            'Fev',
+            'Mar',
+            'Apr',
+            'May',
+            'Iyun',
+            'Iyul',
+            'Avg',
+            'Sen',
+            'Okt',
+            'Noy',
+            'Dek'
+          ];
+          return date.getDate() + ' ' + months[date.getMonth()];
+        }
+
+        function renderWishTile(fields) {
+          var tile = document.createElement('div');
+          var header = document.createElement('div');
+          var heart = document.createElement('span');
+          var name = document.createElement('span');
+          var date = document.createElement('span');
+          var message = document.createElement('div');
+          var createdAt = fields && fields.createdAt
+            ? fields.createdAt.timestampValue
+            : '';
+
+          tile.className = 'fallback-wish-tile';
+          header.className = 'fallback-wish-header';
+          heart.className = 'fallback-wish-heart';
+          date.className = 'fallback-wish-date';
+          message.className = 'fallback-wish-message';
+
+          heart.textContent = '♥';
+          name.textContent = fieldString(fields, 'name') || 'Mehmon';
+          date.textContent = formatWishDate(createdAt);
+          message.textContent = fieldString(fields, 'message') || 'Samimiy tilaklar.';
+
+          header.appendChild(heart);
+          header.appendChild(name);
+          if (date.textContent) {
+            header.appendChild(date);
+          }
+          tile.appendChild(header);
+          tile.appendChild(message);
+          return tile;
+        }
+
+        function renderEmptyWishes() {
+          if (!list) {
+            return;
+          }
+          list.textContent = "Hozircha tilaklar yo'q. Birinchilardan bo'lib yozing!";
+        }
+
+        function loadFallbackWishes() {
+          if (!list) {
+            return;
+          }
+          if (!window.fetch) {
+            renderEmptyWishes();
+            return;
+          }
+
+          var endpoint = firestoreBase + ':runQuery?key=' + apiKey;
+          var body = {
+            structuredQuery: {
+              from: [{ collectionId: 'wedding_responses' }],
+              orderBy: [{
+                field: { fieldPath: 'createdAt' },
+                direction: 'DESCENDING'
+              }],
+              limit: 20
+            }
+          };
+
+          fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          }).then(function (response) {
+            if (!response.ok) {
+              throw new Error('read failed');
+            }
+            return response.json();
+          }).then(function (rows) {
+            var hasItems = false;
+            list.innerHTML = '';
+            for (var i = 0; i < rows.length; i++) {
+              if (rows[i].document && rows[i].document.fields) {
+                list.appendChild(renderWishTile(rows[i].document.fields));
+                hasItems = true;
+              }
+            }
+            if (!hasItems) {
+              renderEmptyWishes();
+            }
+          }).catch(function () {
+            renderEmptyWishes();
+          });
+        }
+
+        function submitFallbackWish(event) {
+          event.preventDefault();
+          if (!window.fetch) {
+            setStatus("Bu brauzerda tilak yuborish qo'llab-quvvatlanmadi.", true);
+            return;
+          }
+
+          var name = nameInput ? nameInput.value.trim() : '';
+          var message = messageInput ? messageInput.value.trim() : '';
+          if (name.length < 2) {
+            setStatus('Ismingizni kiriting.', true);
+            if (nameInput) {
+              nameInput.focus();
+            }
+            return;
+          }
+          if (message.length < 3) {
+            setStatus('Qisqa tilak yozing.', true);
+            if (messageInput) {
+              messageInput.focus();
+            }
+            return;
+          }
+
+          var docId = 'fallback_' + Date.now().toString(36) + '_' +
+            Math.random().toString(36).slice(2, 10);
+          var docName = documentsPath + '/wedding_responses/' + docId;
+          var endpoint = firestoreBase + ':commit?key=' + apiKey;
+          var body = {
+            writes: [{
+              update: {
+                name: docName,
+                fields: {
+                  name: { stringValue: name },
+                  message: { stringValue: message }
+                }
+              },
+              updateTransforms: [{
+                fieldPath: 'createdAt',
+                setToServerValue: 'REQUEST_TIME'
+              }]
+            }]
+          };
+
+          setStatus('', false);
+          setSubmitting(true);
+          fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          }).then(function (response) {
+            if (!response.ok) {
+              throw new Error('write failed');
+            }
+            return response.json();
+          }).then(function () {
+            if (nameInput) {
+              nameInput.value = '';
+            }
+            if (messageInput) {
+              messageInput.value = '';
+            }
+            setStatus('Tilagingiz yuborildi.', false);
+            loadFallbackWishes();
+          }).catch(function () {
+            setStatus('Tilak yuborilmadi. Internet yoki Firebase sozlamasini tekshiring.', true);
+          }).then(function () {
+            setSubmitting(false);
+          });
+        }
+
+        if (form) {
+          form.addEventListener('submit', submitFallbackWish);
+        }
+        loadFallbackWishes();
+      }
+
       function loadFlutter() {
         if (useHtmlFallback) {
           return;
@@ -888,6 +1510,7 @@
       createFallbackStars();
       revealFallbackElements();
       updateFallbackCountdown();
+      setupFallbackWishes();
       setInterval(updateFallbackCountdown, 1000);
 
       if (audio) {

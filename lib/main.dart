@@ -1202,21 +1202,43 @@ class _CountdownSectionState extends State<CountdownSection> {
           ),
         ),
         SizedBox(height: compact ? 24 : 28),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: compact ? 14 : 22,
-          runSpacing: compact ? 18 : 20,
-          children: [
-            for (var index = 0; index < items.length; index++)
-              ScrollReveal(
-                delay: Duration(milliseconds: 120 + index * 90),
-                yOffset: 0.18,
-                child: CountdownBox(
-                  value: items[index].value,
-                  label: items[index].label,
-                ),
-              ),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final availableWidth = constraints.maxWidth.isFinite
+                ? constraints.maxWidth
+                : MediaQuery.sizeOf(context).width;
+            final spacing = compact ? 8.0 : 22.0;
+            final boxWidth = compact
+                ? math.max(
+                    52.0,
+                    math.min(72.0, (availableWidth - spacing * 3) / 4),
+                  )
+                : 92.0;
+            final boxHeight = compact ? boxWidth * 1.24 : 108.0;
+            final valueFontSize = compact
+                ? math.max(24.0, math.min(32.0, boxWidth * 0.45))
+                : 36.0;
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (var index = 0; index < items.length; index++) ...[
+                  if (index > 0) SizedBox(width: spacing),
+                  ScrollReveal(
+                    delay: Duration(milliseconds: 120 + index * 90),
+                    yOffset: 0.18,
+                    child: CountdownBox(
+                      value: items[index].value,
+                      label: items[index].label,
+                      boxWidth: boxWidth,
+                      boxHeight: boxHeight,
+                      valueFontSize: valueFontSize,
+                    ),
+                  ),
+                ],
+              ],
+            );
+          },
         ),
       ],
     );
@@ -1231,24 +1253,35 @@ class CountdownItem {
 }
 
 class CountdownBox extends StatelessWidget {
-  const CountdownBox({required this.value, required this.label, super.key});
+  const CountdownBox({
+    required this.value,
+    required this.label,
+    this.boxWidth,
+    this.boxHeight,
+    this.valueFontSize,
+    super.key,
+  });
 
   final int value;
   final String label;
+  final double? boxWidth;
+  final double? boxHeight;
+  final double? valueFontSize;
 
   @override
   Widget build(BuildContext context) {
     final compact = MediaQuery.sizeOf(context).width < 600;
-    final boxWidth = compact ? 78.0 : 92.0;
-    final boxHeight = compact ? 92.0 : 108.0;
+    final width = boxWidth ?? (compact ? 78.0 : 92.0);
+    final height = boxHeight ?? (compact ? 92.0 : 108.0);
+    final fontSize = valueFontSize ?? (compact ? 32.0 : 36.0);
 
     return SizedBox(
-      width: boxWidth,
+      width: width,
       child: Column(
         children: [
           Container(
-            width: boxWidth,
-            height: boxHeight,
+            width: width,
+            height: height,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.card,
@@ -1265,7 +1298,7 @@ class CountdownBox extends StatelessWidget {
               value.toString().padLeft(2, '0'),
               style: GoogleFonts.playfairDisplay(
                 color: AppColors.accent,
-                fontSize: compact ? 32 : 36,
+                fontSize: fontSize,
                 fontWeight: FontWeight.w700,
               ),
             ),
