@@ -157,6 +157,21 @@
       z-index: 1;
     }
 
+    #html-fallback.js-ready .fallback-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition:
+        opacity 820ms ease,
+        transform 820ms ease;
+      transition-delay: var(--fallback-delay, 0ms);
+      will-change: opacity, transform;
+    }
+
+    #html-fallback.js-ready .fallback-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .fallback-section {
       width: 100%;
       min-height: 100vh;
@@ -333,6 +348,13 @@
       font-weight: 700;
     }
 
+    .fallback-icon svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      stroke: currentColor;
+    }
+
     .fallback-label {
       margin: 0 0 6px;
       color: #8F8A86;
@@ -429,6 +451,61 @@
       letter-spacing: 1.3px;
     }
 
+    .fallback-music-toggle {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 52px;
+      height: 52px;
+      border: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(92, 30, 43, 0.92);
+      color: #E7BE57;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
+      cursor: pointer;
+      z-index: 10001;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fallback-music-toggle svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+      stroke: currentColor;
+    }
+
+    .fallback-music-toggle .music-on-icon {
+      display: none;
+    }
+
+    .fallback-music-toggle.is-playing .music-on-icon {
+      display: block;
+    }
+
+    .fallback-music-toggle.is-playing .music-off-icon {
+      display: none;
+    }
+
+    .fallback-music-toggle:active {
+      transform: scale(0.96);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fallback-dot,
+      .fallback-plus {
+        animation: none;
+      }
+
+      #html-fallback.js-ready .fallback-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
     @media (max-width: 600px) {
       .fallback-section {
         padding-left: 26px;
@@ -493,6 +570,10 @@
         border-radius: 22px;
       }
 
+      .fallback-cards {
+        max-width: 300px;
+      }
+
       .fallback-card h2 {
         font-size: 22px;
         margin-bottom: 24px;
@@ -521,21 +602,32 @@
       }
 
       .fallback-countdown h2 {
-        font-size: 29px;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 23px;
       }
 
       .fallback-countdown-grid {
-        gap: 14px;
+        gap: 8px;
       }
 
       .fallback-countdown-item {
-        width: 78px;
+        width: 64px;
       }
 
       .fallback-countdown-value {
-        width: 78px;
-        height: 92px;
-        font-size: 32px;
+        width: 64px;
+        height: 80px;
+        font-size: 28px;
+      }
+
+      .fallback-music-toggle {
+        left: 14px;
+        right: auto;
+        bottom: 14px;
+        width: 48px;
+        height: 48px;
       }
     }
   </style>
@@ -547,32 +639,44 @@
     <main class="fallback-content">
       <section class="fallback-section fallback-hero">
         <div class="fallback-center">
-          <div class="fallback-verse">✦ &nbsp; وَخَلَقْنَاكُمْ أَزْوَاجًا &nbsp; ✦</div>
-          <div class="fallback-verse-subtitle">Va sizlarni juft qilib yaratdik.<br>("Naba" surasi 8-oyat)</div>
-          <h1>Fozil<span class="fallback-va">va</span>Dilafruz</h1>
-          <div class="fallback-divider">♥</div>
-          <p>Sizni taklif etamiz!</p>
-          <p class="fallback-quote">"Muhabbat - bu ikki yulduzning bir osmonda uchrashishi"</p>
-          <p class="date">8 Sentabr, 2026</p>
-          <div class="fallback-thread"></div>
+          <div class="fallback-verse fallback-reveal" style="--fallback-delay: 0ms">✦ &nbsp; وَخَلَقْنَاكُمْ أَزْوَاجًا &nbsp; ✦</div>
+          <div class="fallback-verse-subtitle fallback-reveal" style="--fallback-delay: 90ms">Va sizlarni juft qilib yaratdik.<br>("Naba" surasi 8-oyat)</div>
+          <h1 class="fallback-reveal" style="--fallback-delay: 180ms">Fozil<span class="fallback-va">va</span>Dilafruz</h1>
+          <div class="fallback-divider fallback-reveal" style="--fallback-delay: 270ms">♥</div>
+          <p class="fallback-reveal" style="--fallback-delay: 360ms">Sizni taklif etamiz!</p>
+          <p class="fallback-quote fallback-reveal" style="--fallback-delay: 450ms">"Muhabbat - bu ikki yulduzning bir osmonda uchrashishi"</p>
+          <p class="date fallback-reveal" style="--fallback-delay: 540ms">8 Sentabr, 2026</p>
+          <div class="fallback-thread fallback-reveal" style="--fallback-delay: 630ms"></div>
         </div>
       </section>
 
-      <section class="fallback-section fallback-details">
+      <section id="details" class="fallback-section fallback-details">
         <div class="fallback-center">
-          <div class="fallback-thread"></div>
+          <div class="fallback-thread fallback-reveal"></div>
           <div class="fallback-cards">
-            <article class="fallback-card">
+            <article class="fallback-card fallback-reveal">
               <h2>Qachon</h2>
               <div class="fallback-row">
-                <span class="fallback-icon">□</span>
+                <span class="fallback-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                    <path d="M16 2v4"></path>
+                    <path d="M8 2v4"></path>
+                    <path d="M3 10h18"></path>
+                  </svg>
+                </span>
                 <div>
                   <div class="fallback-label">Sana</div>
                   <div class="fallback-value">Seshanba, 8-Sentabr</div>
                 </div>
               </div>
               <div class="fallback-row">
-                <span class="fallback-icon">○</span>
+                <span class="fallback-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v5l3 2"></path>
+                  </svg>
+                </span>
                 <div>
                   <div class="fallback-label">Vaqt</div>
                   <div class="fallback-value">Soat 18:00 da</div>
@@ -580,10 +684,15 @@
               </div>
             </article>
 
-            <article class="fallback-card">
+            <article class="fallback-card fallback-reveal" style="--fallback-delay: 170ms">
               <h2>Manzil</h2>
               <div class="fallback-row">
-                <span class="fallback-icon">⌖</span>
+                <span class="fallback-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
                 <div>
                   <div class="fallback-value">"Murod Fayz" Restorani</div>
                   <div class="fallback-muted">Buxoro shahar 6-mikrayon</div>
@@ -598,23 +707,23 @@
         </div>
       </section>
 
-      <section class="fallback-section fallback-countdown">
+      <section id="countdown" class="fallback-section fallback-countdown">
         <div class="fallback-center">
-          <h2>To'ygacha qolgan vaqt</h2>
+          <h2 class="fallback-reveal">To'ygacha qolgan vaqt</h2>
           <div class="fallback-countdown-grid">
-            <div class="fallback-countdown-item">
+            <div class="fallback-countdown-item fallback-reveal" style="--fallback-delay: 120ms">
               <div class="fallback-countdown-value" id="fallback-days">00</div>
               <div class="fallback-countdown-label">KUN</div>
             </div>
-            <div class="fallback-countdown-item">
+            <div class="fallback-countdown-item fallback-reveal" style="--fallback-delay: 210ms">
               <div class="fallback-countdown-value" id="fallback-hours">00</div>
               <div class="fallback-countdown-label">SOAT</div>
             </div>
-            <div class="fallback-countdown-item">
+            <div class="fallback-countdown-item fallback-reveal" style="--fallback-delay: 300ms">
               <div class="fallback-countdown-value" id="fallback-minutes">00</div>
               <div class="fallback-countdown-label">MIN</div>
             </div>
-            <div class="fallback-countdown-item">
+            <div class="fallback-countdown-item fallback-reveal" style="--fallback-delay: 390ms">
               <div class="fallback-countdown-value" id="fallback-seconds">00</div>
               <div class="fallback-countdown-label">SEK</div>
             </div>
@@ -623,12 +732,26 @@
       </section>
     </main>
   </div>
+  <button id="fallback-music-toggle" class="fallback-music-toggle" type="button" aria-label="Musiqani yoqish">
+    <svg class="music-on-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9 18V5l12-2v13"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <circle cx="18" cy="16" r="3"></circle>
+    </svg>
+    <svg class="music-off-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9 18V5l12-2v10"></path>
+      <circle cx="6" cy="18" r="3"></circle>
+      <path d="m16 16 5 5"></path>
+      <path d="m21 16-5 5"></path>
+    </svg>
+  </button>
   <audio id="wedding-music" src="assets/assets/audio/music.mp3" autoplay loop playsinline preload="auto"></audio>
   <script>
     (function () {
       var audio = document.getElementById('wedding-music');
       var fallback = document.getElementById('html-fallback');
       var stars = document.getElementById('fallback-stars');
+      var musicToggle = document.getElementById('fallback-music-toggle');
       var userAgent = navigator.userAgent || '';
       var forceFlutter = window.location.search.indexOf('flutter=1') !== -1;
       var forceHtml = window.location.search.indexOf('html=1') !== -1;
@@ -659,6 +782,10 @@
         fallback.setAttribute('aria-hidden', useHtmlFallback ? 'false' : 'true');
       }
 
+      if (musicToggle) {
+        musicToggle.style.display = useHtmlFallback ? 'flex' : 'none';
+      }
+
       function createFallbackStars() {
         if (!stars) {
           return;
@@ -680,6 +807,39 @@
             star.style.height = size + 'px';
           }
           stars.appendChild(star);
+        }
+      }
+
+      function revealFallbackElements() {
+        if (!fallback) {
+          return;
+        }
+
+        fallback.className += ' js-ready';
+        var elements = fallback.querySelectorAll('.fallback-reveal');
+
+        if (!('IntersectionObserver' in window)) {
+          for (var i = 0; i < elements.length; i++) {
+            elements[i].className += ' is-visible';
+          }
+          return;
+        }
+
+        var observer = new IntersectionObserver(function (entries) {
+          for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+              entries[i].target.className += ' is-visible';
+              observer.unobserve(entries[i].target);
+            }
+          }
+        }, {
+          root: useHtmlFallback ? fallback : null,
+          threshold: 0.12,
+          rootMargin: '0px 0px -8% 0px'
+        });
+
+        for (var j = 0; j < elements.length; j++) {
+          observer.observe(elements[j]);
         }
       }
 
@@ -726,6 +886,7 @@
       }
 
       createFallbackStars();
+      revealFallbackElements();
       updateFallbackCountdown();
       setInterval(updateFallbackCountdown, 1000);
 
@@ -734,9 +895,30 @@
         audio.muted = false;
         audio.style.display = 'none';
 
+        function updateMusicButton() {
+          if (!musicToggle) {
+            return;
+          }
+
+          var isAudible = !audio.paused && !audio.muted;
+          if (isAudible) {
+            musicToggle.className = 'fallback-music-toggle is-playing';
+            musicToggle.setAttribute('aria-label', 'Musiqani to\'xtatish');
+          } else {
+            musicToggle.className = 'fallback-music-toggle';
+            musicToggle.setAttribute('aria-label', 'Musiqani yoqish');
+          }
+          musicToggle.style.display = useHtmlFallback ? 'flex' : 'none';
+        }
+
         function playWeddingMusic(allowMutedFallback) {
           var attempt = audio.play();
           if (attempt && typeof attempt.catch === 'function') {
+            attempt.then(function () {
+              updateMusicButton();
+            }).catch(function () {
+              updateMusicButton();
+            });
             attempt.catch(function () {
               if (!allowMutedFallback) {
                 return;
@@ -745,9 +927,15 @@
               audio.muted = true;
               var mutedAttempt = audio.play();
               if (mutedAttempt && typeof mutedAttempt.catch === 'function') {
-                mutedAttempt.catch(function () { });
+                mutedAttempt.then(function () {
+                  updateMusicButton();
+                }).catch(function () {
+                  updateMusicButton();
+                });
               }
             });
+          } else {
+            updateMusicButton();
           }
         }
 
@@ -761,7 +949,20 @@
           }, delay);
         }
 
-        function unlockMusic() {
+        function eventCameFromMusicToggle(target) {
+          while (target) {
+            if (target === musicToggle) {
+              return true;
+            }
+            target = target.parentNode;
+          }
+          return false;
+        }
+
+        function unlockMusic(event) {
+          if (event && musicToggle && eventCameFromMusicToggle(event.target)) {
+            return;
+          }
           audio.muted = false;
           playWeddingMusic(false);
           window.removeEventListener('pointerdown', unlockMusic, true);
@@ -772,6 +973,26 @@
         window.addEventListener('pointerdown', unlockMusic, true);
         window.addEventListener('touchstart', unlockMusic, true);
         window.addEventListener('click', unlockMusic, true);
+
+        if (musicToggle) {
+          musicToggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (!audio.paused && !audio.muted) {
+              audio.pause();
+              updateMusicButton();
+              return;
+            }
+
+            audio.muted = false;
+            playWeddingMusic(false);
+          });
+        }
+
+        audio.addEventListener('play', updateMusicButton);
+        audio.addEventListener('pause', updateMusicButton);
+        audio.addEventListener('volumechange', updateMusicButton);
+        updateMusicButton();
       }
 
       var lastTouchY = 0;
