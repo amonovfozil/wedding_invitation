@@ -1,11 +1,11 @@
 {
-    "name": "Fozil & Dilafruz - Nikoh taklifnomasi",
+    "name": "Fozil & Dilafruz nikoh taklifnomasi",
     "short_name": "Taklifnoma",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FAF9F6",
     "theme_color": "#966E52",
-    "description": "Fozil va Dilafruzning nikoh taklifnomasi.",
+    "description": "Assalomu alaykum! Sizni 8-sentabr kuni Murod Fayz restoranida bo'ladigan nikoh to'yimizga taklif qilamiz.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
