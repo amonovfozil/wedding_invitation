@@ -74,6 +74,7 @@
     }
 
     #html-fallback {
+      display: none;
       position: fixed;
       inset: 0;
       top: 0;
@@ -1116,9 +1117,22 @@
       var forceFlutter = window.location.search.indexOf('flutter=1') !== -1;
       var forceHtml = window.location.search.indexOf('html=1') !== -1;
       var useHtmlFallback = forceHtml || (!forceFlutter && /Android/i.test(userAgent));
+      var cacheCleanupKey = 'wedding_flutter_cache_cleanup_v1';
       window.weddingMusicAudio = audio;
 
-      function clearOldFlutterCache() {
+      function clearOldFlutterCacheOnce() {
+        try {
+          if (!window.localStorage) {
+            return;
+          }
+          if (window.localStorage.getItem(cacheCleanupKey) === 'done') {
+            return;
+          }
+          window.localStorage.setItem(cacheCleanupKey, 'done');
+        } catch (_) {
+          return;
+        }
+
         if ('serviceWorker' in navigator && navigator.serviceWorker.getRegistrations) {
           navigator.serviceWorker.getRegistrations().then(function (registrations) {
             for (var i = 0; i < registrations.length; i++) {
@@ -1136,9 +1150,10 @@
         }
       }
 
-      clearOldFlutterCache();
+      clearOldFlutterCacheOnce();
 
       if (fallback) {
+        fallback.style.display = useHtmlFallback ? 'block' : 'none';
         fallback.setAttribute('aria-hidden', useHtmlFallback ? 'false' : 'true');
       }
 
@@ -1519,11 +1534,13 @@
         document.body.appendChild(flutterScript);
       }
 
-      createFallbackStars();
-      revealFallbackElements();
-      updateFallbackCountdown();
-      setupFallbackWishes();
-      setInterval(updateFallbackCountdown, 1000);
+      if (useHtmlFallback) {
+        createFallbackStars();
+        revealFallbackElements();
+        updateFallbackCountdown();
+        setupFallbackWishes();
+        setInterval(updateFallbackCountdown, 1000);
+      }
 
       if (audio) {
         audio.volume = 0.42;

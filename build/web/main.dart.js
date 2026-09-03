@@ -80838,12 +80838,11 @@ return new A.z5(new A.yz(this.c,s),"Fozil & Dilafruz",A.pP(s,A.auf(B.a7,s,s,B.an
 A.yz.prototype={
 ad(){var s=new A.aeD(A.d([],t.BI)),r=v.G,q=r.weddingMusicAudio,p=q==null,o=p?r.document.createElement("audio"):q
 s.a=o
-o.src="assets/assets/audio/music.mp3"
-o.preload="auto"
+if(p){o.src="assets/assets/audio/music.mp3"
+o.muted=!1}o.preload="auto"
 o.autoplay=!0
 o.loop=!0
 o.controls=!1
-o.muted=!1
 o.volume=0.42
 o.id="wedding-music"
 o.setAttribute("autoplay","")

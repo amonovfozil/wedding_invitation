@@ -6,21 +6,25 @@ import 'package:web/web.dart' as web;
 @JS('weddingMusicAudio')
 external web.HTMLAudioElement? get _weddingMusicAudio;
 
+const _musicAssetPath = 'assets/assets/audio/music.mp3';
+
 class WeddingMusicPlayer {
   WeddingMusicPlayer() {
     final existingAudio = _weddingMusicAudio;
     _audio = existingAudio ?? web.HTMLAudioElement();
     final createdAudio = existingAudio == null;
 
+    if (createdAudio) {
+      _audio
+        ..src = _musicAssetPath
+        ..muted = false;
+    }
     _audio
-      ..src = 'assets/assets/audio/music.mp3'
       ..preload = 'auto'
       ..autoplay = true
       ..loop = true
       ..controls = false
-      ..muted = false
       ..volume = 0.42;
-
     _audio.id = 'wedding-music';
     _audio
       ..setAttribute('autoplay', '')
